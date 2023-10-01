@@ -36,42 +36,34 @@ x1, y1 = 0, 0
 x2, y2 = TUK_WIDTH // 2, TUK_HEIGHT // 2
 frame = 0
 route_list = []
-list_count = 0
+route_list.append(( TUK_WIDTH // 2, TUK_HEIGHT // 2))
+route_list.append(( TUK_WIDTH - 10, TUK_HEIGHT - 10))
+list_count = 2
 hand_x, hand_y =  TUK_WIDTH // 2, TUK_HEIGHT // 2
 hide_cursor()
+run_count = 0
 
 while running:
-    if list_count <= 1:
+    x1, y1 = route_list[run_count]
+    x2, y2 = route_list[run_count + 1]
+    distance = math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+    distance = int(distance)
+    for j in range(0, distance, 1):
         handle_events()
         clear_canvas()
         TUK_ground.draw(TUK_WIDTH // 2, TUK_HEIGHT // 2)
         hand.clip_draw(0, 0, 50, 50, hand_x, hand_y)
         hand_arrow_draw()
-        character.clip_draw(frame * 100, 100 * 1, 100, 100, x2, y2)
+        t = j / distance
+        x = int((1 - t) * x1 + t * x2)
+        y = int((1 - t) * y1 + t * y2)
+        if x2 > x1:
+            character.clip_draw(frame * 100, 100 * 1, 100, 100, x, y)
+        else:
+            character.clip_draw(frame * 100, 0, 100, 100, x, y)
         update_canvas()
         frame = (frame + 1) % 8
-    elif list_count >= 1:
-        for i in range(1, list_count):
-            x1, y1 = route_list[i - 1]
-            x2, y2 = route_list[i]
-            distance = math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
-            distance = int(distance)
-            for j in range(0, distance, 1):
-                handle_events()
-                clear_canvas()
-                TUK_ground.draw(TUK_WIDTH // 2, TUK_HEIGHT // 2)
-                hand.clip_draw(0, 0, 50, 50, hand_x, hand_y)
-                hand_arrow_draw()
-                t = j / distance
-                x = int((1 - t) * x1 + t * x2)
-                y = int((1 - t) * y1 + t * y2)
-                if x2 > x1:
-                    character.clip_draw(frame * 100, 100 * 1, 100, 100, x, y)
-                else:
-                    character.clip_draw(frame * 100, 0, 100, 100, x, y)
-                update_canvas()
-                frame = (frame + 1) % 8
-    delay(0.01)
-
+    run_count += 1
+           
 close_canvas()
 
