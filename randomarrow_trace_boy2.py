@@ -14,6 +14,17 @@ def hand_arrow_draw():
     x2 = (random.randint(100, 1000))
     y2 = (random.randint(100, 900))
 
+def handle_events():
+    global running
+    events = get_events()
+    for event in events:
+        if event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
+            running = False
+            close_canvas()
+        elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_LEFT:
+            running = False
+            close_canvas()
+
 running = True
 x1, y1 = TUK_WIDTH // 2, TUK_HEIGHT // 2
 x2, y2 = 0, 0
@@ -26,11 +37,7 @@ while running:
     distance = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
     distance = int(distance)
     for i in range(0, distance, 1):
-        events = get_events()
-        for event in events:
-            if event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-                running = False
-                close_canvas()
+        handle_events()
         clear_canvas()
         TUK_ground.draw(TUK_WIDTH // 2, TUK_HEIGHT // 2)
         hand.clip_draw(0, 0, 50, 50, x2, y2)
