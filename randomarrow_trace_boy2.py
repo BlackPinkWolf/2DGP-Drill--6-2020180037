@@ -27,7 +27,7 @@ def handle_events():
             hand_x, hand_y = event.x, TUK_HEIGHT - 1 - event.y
 
 def hand_arrow_draw():
-    for i in range(0, list_count):
+    for i in range(run_count + 1, list_count):
         hand_x, hand_y = route_list[i]
         hand.clip_draw(0, 0, 50, 50, hand_x, hand_y)
 
@@ -64,6 +64,6 @@ while running:
         update_canvas()
         frame = (frame + 1) % 8
     run_count += 1
-           
+
 close_canvas()
 
